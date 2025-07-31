@@ -1,11 +1,14 @@
 
 # CoDa-4DGS: Dynamic Scene Rendering with Context and Deformation Awareness for Autonomous Driving
 
-<div align="center">
-[![Website](https://img.shields.io/badge/Project-Website-blue.svg)](https://rruisong.github.io/publications/CoDa-4DGS/)
-[![paper](https://img.shields.io/badge/arXiv-Paper-green.svg)](https://arxiv.org/abs/2503.06744)
-
-</div>
+<p align="center">
+  <a href="https://rruisong.github.io/publications/CoDa-4DGS/">
+    <img src="https://img.shields.io/badge/Project-Website-blue.svg" alt="Website">
+  </a>
+  <a href="https://arxiv.org/abs/2503.06744">
+    <img src="https://img.shields.io/badge/arXiv-Paper-green.svg" alt="Paper">
+  </a>
+</p>
 
 > **CoDa-4DGS: Dynamic Gaussian Splatting with Context and Deformation Awareness for Autonomous Driving**, ICCV 2025.
 
