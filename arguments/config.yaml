@@ -1,0 +1,7 @@
+source_path: "/PATH/TO/DATASET/DIR"
+expname: "waymo"
+start_checkpoint: ""
+eval_only: False
+model_path: "/PATH/TO/EXPERIMENT/OUTPUTS"
+semantic_feature_path: "/PATH/TO/SEMANTIC/FEATURE/MAP/DIR"
+configs: "arguments/config.py"
