@@ -115,7 +115,8 @@ We use the structure of NeRF On-The-Road (NOTR) Dataset as the standard dataset 
    Then you can get rendering RGB videos, ground truth RGB videos and feature map videos.
 
 ## Acknowledgments
-Our repo is developed based on [3D Gaussian Splatting](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/), [4D Gaussians](https://github.com/hustvl/4DGaussians/tree/master), [Feature 3DGS](https://github.com/ShijieZhou-UCLA/feature-3dgs/tree/main) and [S<sup>3</sup>Gaussian](https://github.com/nnanhuang/S3Gaussian/tree/main). Many thanks to the authors for opensoucing the codebase.
+Our repo is developed based on [3D Gaussian Splatting](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/), [4D Gaussians](https://github.com/hustvl/4DGaussians/tree/master), [Feature 3DGS](https://github.com/ShijieZhou-UCLA/feature-3dgs/tree/main) and [S<sup>3</sup>Gaussian](https://github.com/nnanhuang/S3Gaussian/tree/main). Many thanks to the authors for opensoucing their codebases.
+Our project has also been greatly inspired by other impressive works, such as [StreetGaussian](https://arxiv.org/abs/2401.01339), [EmerNeRF](https://arxiv.org/abs/2311.02077), [PVG](https://arxiv.org/abs/2311.18561), [DN-4DGS](https://arxiv.org/abs/2410.13607) and many others.
 ## Citation
 If this work is helpful for your research, please cite the following BibTeX entry.
  ```bibtex
