@@ -187,7 +187,7 @@ def render_pixels(
     return_decomposition: bool = True,
     debug: bool = False,
     step: int = 0,
-    mlp2=None,
+    dcn=None,
 ):
     """
     Render pixel-related outputs using the specified model and compute optional metrics.
@@ -203,7 +203,7 @@ def render_pixels(
                                                Defaults to True.
         debug (bool, optional): If True, enables debugging mode for the render function. Defaults to False.
         step (int, optional): Current training or evaluation step for logging or debugging. Defaults to 0.
-        mlp2: Optional secondary MLP model for additional computations. Defaults to None.
+        dcn: Optional secondary MLP model for additional computations. Defaults to None.
 
     Returns:
         dict: Rendered outputs, potentially including metrics and decomposition results.
@@ -218,7 +218,7 @@ def render_pixels(
         return_decomposition=return_decomposition,
         debug=debug,
         step=step,
-        mlp2=mlp2,
+        dcn=dcn,
     )
 
     # Compute and log metrics if required
@@ -246,7 +246,7 @@ def render_func(
     debug: bool = False,
     save_seperate_pcd = False,
     step: int = 0,
-    mlp2 = None,
+    dcn = None,
 ):
     """
     Renders a dataset utilizing a specified render function.
@@ -289,7 +289,7 @@ def render_func(
         
         for i in tqdm(range(len(viewpoint_stack)), desc=f"rendering full data", dynamic_ncols=True):
             viewpoint_cam = viewpoint_stack[i]
-            render_pkg = render(viewpoint_cam, gaussians, pipe, bg,return_decomposition = return_decomposition,return_dx=True,iteration=step, deformation_feature=mlp2)
+            render_pkg = render(viewpoint_cam, gaussians, pipe, bg,return_decomposition = return_decomposition,return_dx=True,iteration=step, deformation_feature=dcn)
             image, viewspace_point_tensor, visibility_filter, radii = render_pkg["render"], render_pkg["viewspace_points"], render_pkg["visibility_filter"], render_pkg["radii"]
 
             rgb = image
@@ -376,7 +376,7 @@ def render_func(
 
                     if t == len(dx_list)-num_cams-1 or t == len(dx_list)-num_cams-2 or t == len(dx_list)-num_cams-3: 
                         ff_color_last.append(ff_color)              
-                    render_pkg2 = render(viewpoint_stack[t], gaussians, pipe, bg, override_color=ff_color, iteration=step, deformation_feature=mlp2)
+                    render_pkg2 = render(viewpoint_stack[t], gaussians, pipe, bg, override_color=ff_color, iteration=step, deformation_feature=dcn)
                     ff_map = render_pkg2['render'].permute(1, 2, 0).cpu().numpy()
 
                     forward_flows.append(ff_map)
@@ -389,18 +389,18 @@ def render_func(
                         bf_color = (bf_color - torch.min(bf_color)) / (torch.max(bf_color) - torch.min(bf_color) + 1e-6) 
                     if t == num_cams or t == num_cams+1 or t == num_cams+2: 
                         bf_color_first.append(bf_color)                 
-                    render_pkg2 = render(viewpoint_stack[t], gaussians, pipe, bg, override_color=bf_color, iteration=step, deformation_feature=mlp2)
+                    render_pkg2 = render(viewpoint_stack[t], gaussians, pipe, bg, override_color=bf_color, iteration=step, deformation_feature=dcn)
                     bf_map = render_pkg2['render'].permute(1, 2, 0).cpu().numpy()
 
                     backward_flows.append(bf_map)
 
             for i, bf_color in enumerate(bf_color_first):
-                render_pkg3 = render(viewpoint_stack[i], gaussians, pipe, bg, override_color=bf_color,iteration=step, deformation_feature=mlp2)            
+                render_pkg3 = render(viewpoint_stack[i], gaussians, pipe, bg, override_color=bf_color,iteration=step, deformation_feature=dcn)            
                 bf_map_first = render_pkg3['render'].permute(1, 2, 0).cpu().numpy()       
                 backward_flows.insert(i, bf_map_first)
 
             for i, ff_color in enumerate(ff_color_last):
-                render_pkg4 = render(viewpoint_stack[len(viewpoint_stack)-num_cams+i], gaussians, pipe, bg, override_color=ff_color,iteration=step, deformation_feature=mlp2)            
+                render_pkg4 = render(viewpoint_stack[len(viewpoint_stack)-num_cams+i], gaussians, pipe, bg, override_color=ff_color,iteration=step, deformation_feature=dcn)            
                 ff_map_last = render_pkg4['render'].permute(1, 2, 0).cpu().numpy()       
                 forward_flows.append(ff_map_last)           
 

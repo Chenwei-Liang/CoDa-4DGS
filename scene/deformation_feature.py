@@ -12,7 +12,7 @@ import torch.nn.init as init
 from utils.graphics_utils import apply_rotation, batch_quaternion_multiply
 from scene.hexplane import HexPlaneField
 from scene.grid import DenseGrid
-
+# from scene.grid import HashHexPlane
 class Deformation(nn.Module):
     def __init__(self, D=8, W=256, input_ch=27, input_ch_time=9, grid_pe=0, skips=[], args=None):
         super(Deformation, self).__init__()
@@ -23,6 +23,7 @@ class Deformation(nn.Module):
         self.skips = skips
         self.grid_pe = grid_pe
         self.no_grid = args.no_grid
+        self.grid = HexPlaneField(args.bounds, args.kplanes_config, args.multires)
         self.args = args
 
         if self.args.empty_voxel:
@@ -144,14 +145,10 @@ class deform_network_feature(nn.Module):
         self.register_buffer('time_poc', torch.FloatTensor([(2**i) for i in range(timebase_pe)]))
         self.register_buffer('opacity_poc', torch.FloatTensor([(2**i) for i in range(opacity_pe)]))
         self.apply(initialize_weights)
-        # print(self)
 
     def forward(self, point, scales=None, rotations=None, opacity=None, shs=None, times_sel=None, semantic_feature=None, dx=None):
         return self.forward_dynamic(point, scales, rotations, opacity, shs, times_sel,  semantic_feature, dx)
-    # @property
-    # def get_aabb(self):
-        
-    #     return self.deformation_net.get_aabb
+    
     @property
     def get_empty_ratio(self):
         return self.deformation_net.get_empty_ratio

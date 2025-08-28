@@ -74,6 +74,9 @@ def scene_reconstruction(dataset, opt, hyper, pipe, checkpoint_iterations, check
                 dcn_path = os.path.join(dir_path, f"deformation_feature_fine_{iteration}.pth")
                 dcn.load_state_dict(torch.load(dcn_path))
                 dcn.cuda()
+                cnn_decoder_path = os.path.join(dir_path, f"cnn_decoder_fine_{iteration}.pth")
+                cnn_decoder.load_state_dict(torch.load(cnn_decoder_path))
+                cnn_decoder.cuda()
 
     bg_color = [1, 1, 1] if dataset.white_background else [0, 0, 0]
     background = torch.tensor(bg_color, dtype=torch.float32, device="cuda")
@@ -300,6 +303,7 @@ def scene_reconstruction(dataset, opt, hyper, pipe, checkpoint_iterations, check
                 print("\n[ITER {}] Saving Checkpoint".format(iteration))
                 torch.save((gaussians.capture(), iteration), scene.model_path + "/chkpnt" +f"_{stage}_" + str(iteration) + ".pth")
                 torch.save(dcn.state_dict(), scene.model_path + "/deformation_feature" +f"_{stage}_" + str(iteration) + ".pth")
+                torch.save(cnn_decoder.state_dict(), scene.model_path + "/cnn_decoder" +f"_{stage}_" + str(iteration) + ".pth")
 
             if (iteration %  10000== 0):
                 eval_dir = os.path.join(args.model_path,"eval")
